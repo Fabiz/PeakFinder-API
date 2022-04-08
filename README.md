@@ -54,7 +54,7 @@ Check out this example page: [basicexample_iframe.html](https://fabiz.github.io/
 
 This method gives you the most flexibility. You can use Javascript to control the PeakFinder module.
 
-Check out this example page: [basicexample_iframe.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas.html).
+Check out this example page: [basicexample_canvas.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas.html).
 \
 \
 You must do the following steps: 
