@@ -96,9 +96,6 @@ Add the following canvas tag your your html body:
  Add the following script to load the module
 
 ```javascript
-function wasmcallback(cmd) {
-  console.log('command: ' + cmd)
-}
 
 if (PeakFinder.utils.caniuse()) {
 
@@ -107,8 +104,6 @@ if (PeakFinder.utils.caniuse()) {
     locale: 'en' // attach to canvas
   }) 
   
-  panel.registerCommandsCallback(commandscallback)
-
   panel.init(function() {
     // inside here its save to use the panel
     
