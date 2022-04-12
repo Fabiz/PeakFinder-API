@@ -1,7 +1,12 @@
 
 # PeakFinder-API
 
-This page contains information about embedding the [PeakFinder](https://wwwpeakfinder.org) mountain panorama module to your website.
+This page contains information about embedding the [PeakFinder](https://www.peakfinder.org) mountain panorama module to your website.
+
+PeakFinder supports 3 different methods to embed the Panorama Panel to a website:
+- Url-Format: Create a link including latitude/longitude and some optional parameters to link to the [PeakFinder](https://www.peakfinder.org) website
+- Embed with iFrame: Add an iFrame container to your website with latitude/longitude
+- Embed with Canvas: Use Javascript for full control of the Panorama Panel
 
 ## Url-Format
 
@@ -95,17 +100,181 @@ function wasmcallback(cmd) {
   console.log('command: ' + cmd)
 }
 
-window.onload = () => {
-  if (PFWasm.hasWasmSupport()) {
-    let wasm = new PFWasm('pfcanvas') // attach to canvas
-    wasm.registercallback(wasmcallback)
-    wasm.load('en')
-  } else {
-    console.log('This browser does not support webassembly')
-  }
+if (PeakFinder.utils.caniuse()) {
+
+  let panel = new PeakFinder.PanoramaPanel({
+    canvasid: 'pfcanvas', 
+    locale: 'en' // attach to canvas
+  }) 
+  
+  panel.registerCommandsCallback(commandscallback)
+
+  panel.init(function() {
+    // inside here its save to use the panel
+    
+    panel.settings.distanceUnit(1) // use imperial (miles, feet) format
+            
+    panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn') // loads a viewpoint
+  });
 }
 ```
 
 
+* * *
+
+# Javascript API Reference
+
+## Version 1.0
 
 
+* * *
+
+### Functions
+
+<a name="module_PeakFinder..PeakFinder"></a>
+
+### PeakFinder~PeakFinder : <code>object</code>
+Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in a Javascript dictionary:
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+
+**Example**  
+```js
+let panel = new PeakFinder.PanoramaPanel({
+  canvasid: 'pfcanvas', 
+  locale: 'en'
+}) // attach to canvas
+```
+<a name="module_PeakFinder..registerCommandsCallback"></a>
+
+### PeakFinder~registerCommandsCallback(command)
+Registers a callback that receives commands/messages from the PanoramaPanel.
+The PanoramaPanel will send a message when a specific event occured. E.g. when a
+new viewpoint was loaded the command: \
+<code> viewpoint changed lat=46.53722&lng=8.12610 </code> \
+will be sent. 
+Normally register to this callback can be skipped.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| command | <code>function</code> | function must have the format functioname(command). |
+
+**Example**  
+```js
+panel.registerCommandsCallback(function(cmd) {
+  console.log(cmd)
+})
+```
+<a name="module_PeakFinder..init"></a>
+
+### PeakFinder~init(callback)
+Loads all the needed stuff for displaying the panorama. Call this method only once.
+The async callback will inform when the panorama panel is ready. After this call additional
+commands like <code>loadViewpoint</code> may be called.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | This function will be called when everything is ready |
+
+**Example**  
+```js
+panel.init(function() {
+  console.log('ready')
+  // inside here you can use panel
+  panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
+  
+});
+```
+<a name="module_PeakFinder..loadViewpoint"></a>
+
+### PeakFinder~loadViewpoint(Latitude, Longitude, The)
+Loads a viewpoint with the given coordinates and an optional name
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Latitude | <code>number</code> |  |
+| Longitude | <code>number</code> |  |
+| The | <code>string</code> | viewpoint name. Optional |
+
+
+* * *
+
+## PeakFinder.settings
+
+The following setters and getters manage the PeakFinder settings.
+
+<a name="module_PeakFinder.Settings..distanceUnit"></a>
+
+### PeakFinder.Settings~distanceUnit() ⇒ <code>number</code>
+Get/set distance unit. \
+0: metric, 1: imperial
+
+**Example**  
+```js
+panel.settings.distanceUnit(1) // set to imperial
+
+const unit = panel.settings.distanceUnit() // gets imperial
+```
+<a name="module_PeakFinder.Settings..coordsFormat"></a>
+
+### PeakFinder.Settings~coordsFormat() ⇒ <code>number</code>
+Get/set the coordinates format. \
+0: degree (46°30'21"N 8°20'14"E), 1: decimal (46.2412°N 8.1342°E)
+
+<a name="module_PeakFinder.Settings..projection"></a>
+
+### PeakFinder.Settings~projection() ⇒ <code>number</code>
+Get/set the projection. \
+0: perspective, 1: cylindrical
+
+<a name="module_PeakFinder.Settings..showSun"></a>
+
+### PeakFinder.Settings~showSun() ⇒ <code>number</code>
+Get/set display of the sun ecliptic. \
+0: hide, 1: show
+
+<a name="module_PeakFinder.Settings..showMoon"></a>
+
+### PeakFinder.Settings~showMoon() ⇒ <code>number</code>
+Get/set display of the moon ecliptic. \
+0: hide, 1: show
+
+<a name="module_PeakFinder.Settings..showGrid"></a>
+
+### PeakFinder.Settings~showGrid() ⇒ <code>number</code>
+Get/set display of the coordinate grid. \
+0: hide, 1: show
+
+
+* * *
+
+
+## PeakFinder.utils
+
+The following static util functions may be used for the initialization of the module.
+
+<a name="module_PeakFinder.utils.caniuse"></a>
+
+### PeakFinder.utils.caniuse() ⇒ <code>Boolean</code>
+Checks if the browser supports the required technoligies to display the PeakFinder PanoramaPanel.
+
+**Returns**: <code>Boolean</code> - True if showing PeakFinder module is supported  
+<a name="module_PeakFinder.utils.isTouchDevice"></a>
+
+### PeakFinder.utils.isTouchDevice() ⇒ <code>Boolean</code>
+Checks if device has a touch screen.
+
+**Returns**: <code>Boolean</code> - True if its a touch device  
+
+* * *
+
+
+@ [https://www.peakfinder.org](www.peakfinder.org)

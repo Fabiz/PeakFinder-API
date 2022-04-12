@@ -8,8 +8,10 @@
     />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="example.css" />
+   
+    <!-- <script async type="text/javascript" src="http://192.168.51.51:3000/script/peakfinder.1.0.min.js"></script> -->
     <script async type="text/javascript" src="https://www.peakfinder.org/script/peakfinder.1.0.min.js"></script>
-  </head>
+  </head> 
 
   <body>
     <div class="container">
@@ -48,17 +50,33 @@
     </div>
 
     <script type="text/javascript">
-      function wasmcallback(cmd) {
+      function commandscallback(cmd) {
         console.log('command: ' + cmd)
       }
 
       window.onload = () => {
-        if (PFWasm.hasWasmSupport()) {
-          let wasm = new PFWasm('pfcanvas') // attach to canvas
-          wasm.registercallback(wasmcallback)
-          wasm.load('en')
-        } else {
-          console.log('This browser does not support webassembly')
+
+        if (PeakFinder.utils.caniuse()) {
+
+          let panel = new PeakFinder.PanoramaPanel({
+            canvasid: 'pfcanvas', 
+            locale: 'en'
+          }) // attach to canvas
+         
+          panel.registerCommandsCallback(commandscallback)
+
+          panel.init(function() {
+            console.log('ready')
+            panel.settings.distanceUnit(1)
+        
+            // inside here you can use panel
+            panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
+        
+          
+          });
+        }
+        else { // !caniuse
+        
         }
       }
     </script>
