@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="example.css" />
    
-    <!-- <script async type="text/javascript" src="http://localhost:3000/script/peakfinder.1.0.min.js"></script> -->
+    <!-- <script async type="text/javascript" src="http://localhost:3000/script/peakfinder.1.0.min.js"></script>  -->
     <script async type="text/javascript" src="https://www.peakfinder.org/script/peakfinder.1.0.min.js"></script>
   </head> 
 
@@ -69,9 +69,12 @@
             console.log('ready')
             panel.settings.distanceUnit(1)
         
-            // inside here you can use panel
             panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
-        
+
+            // animate to view
+            panel.azimut(209.0, 2.0)
+            panel.altitude(1.0, 1.0)
+            panel.fieldofview(45.0, 2.0)
           
           });
         }
