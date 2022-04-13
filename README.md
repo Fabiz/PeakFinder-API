@@ -199,6 +199,45 @@ Loads a viewpoint with the given coordinates and an optional name
 | Longitude | <code>number</code> |  |
 | The | <code>string</code> | viewpoint name. Optional |
 
+<a name="module_PeakFinder..azimut"></a>
+
+### PeakFinder~azimut(val, animationduration) ⇒ <code>number</code>
+Get/set azimut.
+
+
+| Param | Description |
+| --- | --- |
+| val | The azimut value in degrees |
+| animationduration | The duration of the animation. If undefined no animation will be done. |
+
+**Example**  
+```js
+panel.azimut(120.0, 1.0) // set azimut with an animation time of 1 second
+
+const azimut = panel.azimut() // gets azimut
+```
+<a name="module_PeakFinder..altitude"></a>
+
+### PeakFinder~altitude(val, animationduration) ⇒ <code>number</code>
+Get/set altitude.
+
+
+| Param | Description |
+| --- | --- |
+| val | The altitude value in degrees |
+| animationduration | The duration of the animation. If undefined no animation will be done. |
+
+<a name="module_PeakFinder..fieldofview"></a>
+
+### PeakFinder~fieldofview(val, animationduration) ⇒ <code>number</code>
+Get/set field of view (zoom).
+
+
+| Param | Description |
+| --- | --- |
+| val | The field of view (zoom) value in degrees |
+| animationduration | The duration of the animation. If undefined no animation will be done. |
+
 
 * * *
 
