@@ -69,10 +69,10 @@ You must do the following steps:
 
 ### Include Javascript
 
-Include https://www.peakfinder.org/script/peakfinder.min.js in your html header:
+Include https://www.peakfinder.org/script/peakfinder.1.0.min.js in your html header:
 
 ```html
-   <script async type="text/javascript" src="https://www.peakfinder.org/script/peakfinder.min.js"></script>
+   <script async type="text/javascript" src="https://www.peakfinder.org/script/peakfinder.1.0.min.js"></script>
  ````
 
 ### Create Canvas Tag
@@ -93,7 +93,7 @@ Add the following canvas tag your your html body:
 
  ### Load script
  
- Add the following script to load the module
+ Add the following script to load the module:
 
 ```javascript
 
