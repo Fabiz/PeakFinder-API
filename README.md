@@ -192,6 +192,20 @@ panel.init(function() {
   
 });
 ```
+<a name="module_PeakFinder..asyncinit"></a>
+
+### PeakFinder~asyncinit()
+Loads all the needed stuff for displaying the panorama. Call this method only once.
+Same as the init function but with support for the Javascript async pattern. After this call additional
+commands like <code>loadViewpoint</code> may be called.
+
+**Example**  
+```js
+async panel.asyncinit()
+
+console.log('ready')
+panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
+```
 <a name="module_PeakFinder..loadViewpoint"></a>
 
 ### PeakFinder~loadViewpoint(Latitude, Longitude, The)
