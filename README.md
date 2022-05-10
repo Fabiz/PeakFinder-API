@@ -142,6 +142,7 @@ Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in
 | --- | --- | --- |
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
 | locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
 
 **Example**  
 ```js
