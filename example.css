@@ -16,6 +16,14 @@ body,
   margin: 0;
 }
 
+h1 {
+    font-size: 150%;
+}
+
+h2 {
+    font-size: 100%;
+}
+
 body {
   overflow: hidden;
 }
