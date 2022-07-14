@@ -271,7 +271,7 @@ Get/set elevation offset.
 
 **Example**  
 ```js
-panel.elevationOffset(200.0, 1.0) // set elevation offset to 200m animation time of 1 second
+await panel.elevationOffset(200.0, 1.0) // set elevation offset to 200m animation time of 1 second
 
 const elev = panel.elevationOffset() // gets elevation offset
 ```
