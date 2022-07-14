@@ -63,8 +63,6 @@
 
           panel.init(async function() {
             console.log('ready')
-            panel.settings.distanceUnit(1)
-        
             panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 
             // animate to view
@@ -74,12 +72,14 @@
           
             await PeakFinder.utils.sleep(4.0) // wait until viewpoint is loaded
 
-            panel.telescope.show()
+            while (true) { // fly up and down continuously
 
-            await PeakFinder.utils.sleep(1.0) // wait a moment until the telescope data is calculated
+              await panel.elevationOffset(1000, 5.0) // animate elevation offset
+              await PeakFinder.utils.sleep(5.0) // wait a moment 
+              await panel.elevationOffset(0, 5.0) // animate elevation offset back
+              await PeakFinder.utils.sleep(5.0) /
 
-            console.log(`dist: ${panel.telescope.centerDistance()}m`)
-            console.log(`elev: ${panel.telescope.centerElevation()}m`)
+            }
           });
         }
         else { // !caniuse

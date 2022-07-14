@@ -23,8 +23,6 @@ The following links opens the PeakFinder app with the given viewpoint on your iO
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941)
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500)
 
-Check out this example page: [basicexample_links.html](https://fabiz.github.io/PeakFinder-API/basicexample_links.html).
-
 ### Arguments
 
 Additionally to the required parameters lat and lng you can add the following arguments:
@@ -234,7 +232,7 @@ Get/set azimut.
 
 **Example**  
 ```js
-panel.azimut(120.0, 1.0) // set azimut with an animation time of 1 second
+await panel.azimut(120.0, 1.0) // set azimut with an animation time of 1 second
 
 const azimut = panel.azimut() // gets azimut
 ```
@@ -477,14 +475,14 @@ Non-blocking sleep function. Use this function to wait for a result of an async 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| timeout | <code>number</code> | in milli seconds |
+| timeout | <code>number</code> | in seconds |
 
 **Example**  
 ```js
 panel.astro.currentDateTime(2022, 7, 12, 14, 30)
 
 // it takes a moment until the suntimes are evaluated. so sleep for a second.
-await PeakFinder.utils.sleep(1000)
+await PeakFinder.utils.sleep(1.0)
 console.log(panel.astro.sunTimes())
 ```
 
