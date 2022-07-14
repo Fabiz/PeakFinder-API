@@ -209,15 +209,15 @@ panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 ```
 <a name="module_PeakFinder..loadViewpoint"></a>
 
-### PeakFinder~loadViewpoint(Latitude, Longitude, The)
+### PeakFinder~loadViewpoint(latitude, longitude, the)
 Loads a viewpoint with the given coordinates and an optional name
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| Latitude | <code>number</code> |  |
-| Longitude | <code>number</code> |  |
-| The | <code>string</code> | viewpoint name. Optional |
+| latitude | <code>number</code> |  |
+| longitude | <code>number</code> |  |
+| the | <code>string</code> | viewpoint name. Optional |
 
 <a name="module_PeakFinder..azimut"></a>
 
@@ -258,6 +258,23 @@ Get/set field of view (zoom).
 | val | The field of view (zoom) value in degrees |
 | animationduration | The duration of the animation. If undefined no animation will be done. |
 
+<a name="module_PeakFinder..elevationOffset"></a>
+
+### PeakFinder~elevationOffset(val, animationduration) ⇒ <code>number</code>
+Get/set elevation offset.
+
+
+| Param | Description |
+| --- | --- |
+| val | The elevation offset in meters |
+| animationduration | The duration of the animation. If undefined no animation will be done. |
+
+**Example**  
+```js
+panel.elevationOffset(200.0, 1.0) // set elevation offset to 200m animation time of 1 second
+
+const elev = panel.elevationOffset() // gets elevation offset
+```
 
 * * *
 
@@ -265,6 +282,18 @@ Get/set field of view (zoom).
 
 The following setters and getters manage the PeakFinder settings.
 
+<a name="module_PeakFinder.Settings..theme"></a>
+
+### PeakFinder.Settings~theme() ⇒ <code>number</code>
+Get/set theme. \
+0: light, 1: dark
+
+**Example**  
+```js
+panel.settings.theme(1) // set to dark
+
+const unit = panel.settings.theme() // gets dark
+```
 <a name="module_PeakFinder.Settings..distanceUnit"></a>
 
 ### PeakFinder.Settings~distanceUnit() ⇒ <code>number</code>
@@ -310,6 +339,117 @@ Get/set display of the coordinate grid. \
 
 * * *
 
+## PeakFinder.viewpoint
+
+These methods return information about the current viewpoint.
+
+<a name="module_PeakFinder.Viewpoint..name"></a>
+
+### PeakFinder.Viewpoint~name() ⇒ <code>String</code>
+Gets the viewpoint name.
+
+**Returns**: <code>String</code> - the viewpoint name  
+<a name="module_PeakFinder.Viewpoint..coordsdecimal"></a>
+
+### PeakFinder.Viewpoint~coordsdecimal() ⇒ <code>String</code>
+Gets the viewpoint coordinates in decimal format.
+
+**Returns**: <code>String</code> - the coordinates in decimal format (e.g. 46.53722°N, 8.12610°E)  
+<a name="module_PeakFinder.Viewpoint..coordsdegree"></a>
+
+### PeakFinder.Viewpoint~coordsdegree() ⇒ <code>String</code>
+Gets the viewpoint coordinates in degree format.
+
+**Returns**: <code>String</code> - the coordinates in degreee format (e.g. 46°32'13''N, 8°07'33''E)  
+
+* * *
+
+## PeakFinder.astro
+
+These methods can be used to set the current date/time and to return sunrise/sunset, moonrise/moonset times.
+
+<a name="module_PeakFinder.Astro..currentDateTime"></a>
+
+### PeakFinder.Astro~currentDateTime(year, month, day, hour, minute)
+Sets the date/time for the caluclation of sun and moon times
+
+
+| Param | Type |
+| --- | --- |
+| year | <code>number</code> | 
+| month | <code>number</code> | 
+| day | <code>number</code> | 
+| hour | <code>number</code> | 
+| minute | <code>number</code> | 
+
+**Example**  
+```js
+panel.astro.currentDateTime(2022, 7, 12, 14, 30)
+```
+<a name="module_PeakFinder.Astro..currentDateTimeNow"></a>
+
+### PeakFinder.Astro~currentDateTimeNow()
+Sets the date/time to now
+
+<a name="module_PeakFinder.Astro..sunTimes"></a>
+
+### PeakFinder.Astro~sunTimes() ⇒ <code>String</code>
+Gets the time of sunrise, sunset.
+
+**Returns**: <code>String</code> - the times (e.g. '↑05:54, ↓21:17')  
+<a name="module_PeakFinder.Astro..moonTimes"></a>
+
+### PeakFinder.Astro~moonTimes() ⇒ <code>String</code>
+Gets the time of moonrise, moonset.
+
+**Returns**: <code>String</code> - the times (e.g. '↑07:13, ↓22:33, 3.4%')  
+
+* * *
+
+## PeakFinder.telescope
+
+These methods can be used to show/hide telescope and get azimut, altitude, distance and elevation.
+
+<a name="module_PeakFinder.Telescope..show"></a>
+
+### PeakFinder.Telescope~show()
+Shows the telescope
+
+**Example**  
+```js
+panel.telescope.show()
+```
+<a name="module_PeakFinder.Telescope..hide"></a>
+
+### PeakFinder.Telescope~hide()
+Hide the telescope
+
+<a name="module_PeakFinder.Telescope..centerAzimut"></a>
+
+### PeakFinder.Telescope~centerAzimut() ⇒ <code>Number</code>
+Get the azimut of the telecope center
+
+**Returns**: <code>Number</code> - azimut  
+<a name="module_PeakFinder.Telescope..centerAltitude"></a>
+
+### PeakFinder.Telescope~centerAltitude() ⇒ <code>Number</code>
+Get the altitude of the telecope center
+
+**Returns**: <code>Number</code> - altitude  
+<a name="module_PeakFinder.Telescope..centerDistance"></a>
+
+### PeakFinder.Telescope~centerDistance() ⇒ <code>Number</code>
+Get the distance of the telecope center
+
+**Returns**: <code>Number</code> - distance  
+<a name="module_PeakFinder.Telescope..centerElevation"></a>
+
+### PeakFinder.Telescope~centerElevation() ⇒ <code>Number</code>
+Get the elevation of the telecope center
+
+**Returns**: <code>Number</code> - elevation  
+
+* * *
 
 ## PeakFinder.utils
 
@@ -327,6 +467,24 @@ Checks if the browser supports the required technoligies to display the PeakFind
 Checks if device has a touch screen.
 
 **Returns**: <code>Boolean</code> - True if its a touch device  
+<a name="module_PeakFinder.utils.sleep"></a>
+
+### PeakFinder.utils.sleep(timeout)
+Non-blocking sleep function. Use this function to wait for a result of an async call.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| timeout | <code>number</code> | in milli seconds |
+
+**Example**  
+```js
+panel.astro.currentDateTime(2022, 7, 12, 14, 30)
+
+// it takes a moment until the suntimes are evaluated. so sleep for a second.
+await PeakFinder.utils.sleep(1000)
+console.log(panel.astro.sunTimes())
+```
 
 * * *
 
