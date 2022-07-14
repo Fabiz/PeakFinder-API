@@ -23,6 +23,8 @@ The following links opens the PeakFinder app with the given viewpoint on your iO
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941)
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500)
 
+Check out this example page: [basicexample_links.html](https://fabiz.github.io/PeakFinder-API/basicexample_links.html).
+
 ### Arguments
 
 Additionally to the required parameters lat and lng you can add the following arguments:
