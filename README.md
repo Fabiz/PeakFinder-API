@@ -374,13 +374,13 @@ These methods can be used to set the current date/time and to return sunrise/sun
 Sets the date/time for the caluclation of sun and moon times
 
 
-| Param | Type |
-| --- | --- |
-| year | <code>number</code> | 
-| month | <code>number</code> | 
-| day | <code>number</code> | 
-| hour | <code>number</code> | 
-| minute | <code>number</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| year | <code>number</code> |  |
+| month | <code>number</code> | (1..12) |
+| day | <code>number</code> | (1..31) |
+| hour | <code>number</code> |  |
+| minute | <code>number</code> |  |
 
 **Example**  
 ```js
