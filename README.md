@@ -361,6 +361,12 @@ Gets the viewpoint coordinates in decimal format.
 Gets the viewpoint coordinates in degree format.
 
 **Returns**: <code>String</code> - the coordinates in degreee format (e.g. 46°32'13''N, 8°07'33''E)  
+<a name="module_PeakFinder.Viewpoint..elevation"></a>
+
+### PeakFinder.Viewpoint~elevation() ⇒ <code>number</code>
+Gets the viewpoint elevation in meters.
+
+**Returns**: <code>number</code> - the elevation in meters  
 
 * * *
 
