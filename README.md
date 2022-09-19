@@ -336,6 +336,18 @@ Get/set display of the moon ecliptic. \
 Get/set display of the coordinate grid. \
 0: hide, 1: show
 
+<a name="module_PeakFinder.Settings..visibilityRange"></a>
+
+### PeakFinder.Settings~visibilityRange() ⇒ <code>number</code>
+Get/set the visiblitiy range in meters. \
+valid range: 0..320000 (320km, 200mil)
+
+<a name="module_PeakFinder.Settings..minimalElevation"></a>
+
+### PeakFinder.Settings~minimalElevation() ⇒ <code>number</code>
+Get/set the minimal elevation for the displayed peak names. \
+valid range: 0..10000 (10000m, 32000feet)
+
 
 * * *
 
@@ -361,6 +373,12 @@ Gets the viewpoint coordinates in decimal format.
 Gets the viewpoint coordinates in degree format.
 
 **Returns**: <code>String</code> - the coordinates in degreee format (e.g. 46°32'13''N, 8°07'33''E)  
+<a name="module_PeakFinder.Viewpoint..elevation"></a>
+
+### PeakFinder.Viewpoint~elevation() ⇒ <code>number</code>
+Gets the viewpoint elevation in meters.
+
+**Returns**: <code>number</code> - the elevation in meters  
 
 * * *
 
