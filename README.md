@@ -336,6 +336,18 @@ Get/set display of the moon ecliptic. \
 Get/set display of the coordinate grid. \
 0: hide, 1: show
 
+<a name="module_PeakFinder.Settings..visibilityRange"></a>
+
+### PeakFinder.Settings~visibilityRange() ⇒ <code>number</code>
+Get/set the visiblitiy range in meters. \
+valid range: 0..320000 (320km, 200mil)
+
+<a name="module_PeakFinder.Settings..minimalElevation"></a>
+
+### PeakFinder.Settings~minimalElevation() ⇒ <code>number</code>
+Get/set the minimal elevation for the displayed peak names. \
+valid range: 0..10000 (10000m, 32000feet)
+
 
 * * *
 
