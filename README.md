@@ -1,10 +1,10 @@
 
 # PeakFinder-API
 
-This page contains information about embedding the [PeakFinder](https://www.peakfinder.org) mountain panorama module to your website.
+This page contains information about embedding the [PeakFinder](https://www.peakfinder.com) mountain panorama module to your website.
 
 PeakFinder supports 3 different methods to embed the Panorama Panel to a website:
-- Url-Format: Create a link including latitude/longitude and some optional parameters to link to the [PeakFinder](https://www.peakfinder.org) website
+- Url-Format: Create a link including latitude/longitude and some optional parameters to link to the [PeakFinder](https://www.peakfinder.com) website
 - Embed with iFrame: Add an iFrame container to your website with latitude/longitude
 - Embed with Canvas: Use Javascript for full control of the Panorama Panel
 
@@ -14,7 +14,7 @@ PeakFinder provides a simple interface that allows you to create a link to a cer
 
 PeakFinder URL Format
 The following link opens the PeakFinder website with the given viewpoint:
-https://www.peakfinder.org/?lat=42.8612&lng=-72.109&name=Monadnock&ele=941
+https://www.peakfinder.com/?lat=42.8612&lng=-72.109&name=Monadnock&ele=941
 
 
 The following links opens the PeakFinder app with the given viewpoint on your iOS or Android device:
@@ -48,7 +48,7 @@ Check out this example page: [basicexample_iframe.html](https://fabiz.github.io/
 
 
 ```html
-<iframe src="https://www.peakfinder.org/embed/?lat=42.8612&lng=-72.1092&name=Monadnock%20Mountain&ele=941&zoom=5&azi=255" 
+<iframe src="https://www.peakfinder.com/embed/?lat=42.8612&lng=-72.1092&name=Monadnock%20Mountain&ele=941&zoom=5&azi=255" 
     frameBorder="0" width="100%" height="570" name="peakfinder">
 <p>Your Browser do not support iFrames.</p>
 </iframe>
@@ -69,10 +69,10 @@ You must do the following steps:
 
 ### Include Javascript
 
-Include https://www.peakfinder.org/script/peakfinder.1.0.min.js in your html header:
+Include https://www.peakfinder.com/script/peakfinder.1.0.min.js in your html header:
 
 ```html
-<script async type="text/javascript" src="https://www.peakfinder.org/script/peakfinder.1.0.min.js"></script>
+<script async type="text/javascript" src="https://www.peakfinder.com/script/peakfinder.1.0.min.js"></script>
  ````
 
 ### Create Canvas Tag
@@ -507,4 +507,4 @@ console.log(panel.astro.sunTimes())
 * * *
 
 
-@ [https://www.peakfinder.org](www.peakfinder.org)
+@ [https://www.peakfinder.com](www.peakfinder.com)
