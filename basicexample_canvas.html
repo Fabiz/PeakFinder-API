@@ -46,10 +46,7 @@
     </div>
 
     <script type="text/javascript">
-      function commandscallback(cmd) {
-        console.log('command: ' + cmd)
-      }
-
+ 
       window.onload = () => {
 
         if (PeakFinder.utils.caniuse()) {
@@ -59,7 +56,9 @@
             locale: 'en'
           }) // attach to canvas
          
-          panel.registerCommandsCallback(commandscallback)
+          panel.addEventListener('viewpointjourney finished', function (args) {
+            console.log('viewpointjourney finished' + args)
+          })
 
           panel.init(function() {
             console.log('ready')

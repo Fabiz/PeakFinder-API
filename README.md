@@ -151,6 +151,27 @@ let panel = new PeakFinder.PanoramaPanel({
   locale: 'en'
 }) // attach to canvas
 ```
+<a name="module_PeakFinder..addEventListener"></a>
+
+### PeakFinder~addEventListener(eventname, callback)
+Registers an event listenster that receives events from the PanoramaPanel.
+This method must be called after the init() resp. asycinit() methode.
+The following events are supported:
+'viewpointjourney finished' : all data for a new viewpoint has been loaded 
+'viewpoint changed' : viewpoint has changed
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| eventname | <code>string</code> | The name of the event (see list above) |
+| callback | <code>function</code> | This function will be called when the requested event is dispached |
+
+**Example**  
+```js
+panel.addEventListener('viewpointjourney finished', function() {
+  console.log('viewpointjourney has been finished')
+})
+```
 <a name="module_PeakFinder..registerCommandsCallback"></a>
 
 ### PeakFinder~registerCommandsCallback(command)
@@ -218,6 +239,11 @@ Loads a viewpoint with the given coordinates and an optional name
 | latitude | <code>number</code> |  |
 | longitude | <code>number</code> |  |
 | the | <code>string</code> | viewpoint name. Optional |
+
+<a name="module_PeakFinder..viewpointJourneyFinished"></a>
+
+### PeakFinder~viewpointJourneyFinished() ⇒ <code>boolean</code>
+Checks if the viewpoint journey has been finished.
 
 <a name="module_PeakFinder..azimut"></a>
 

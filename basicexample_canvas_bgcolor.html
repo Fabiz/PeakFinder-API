@@ -46,10 +46,7 @@
     </div>
 
     <script type="text/javascript">
-      function commandscallback(cmd) {
-        console.log('command: ' + cmd)
-      }
-
+   
       window.onload = () => {
 
         if (PeakFinder.utils.caniuse()) {
@@ -60,8 +57,6 @@
             bgcolor: '#87CEEB'
           }) // attach to canvas
          
-          panel.registerCommandsCallback(commandscallback)
-
           panel.init(function() {
             console.log('ready')
             panel.settings.distanceUnit(1)
