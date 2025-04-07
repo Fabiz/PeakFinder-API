@@ -9,8 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="example.css" />
    
-    <!-- <script async type="text/javascript" src="http://localhost:3000/script/peakfinder.1.0.min.js"></script>  -->
     <script async type="text/javascript" src="https://www.peakfinder.com/script/peakfinder.1.0.min.js"></script>
+ 
   </head> 
 
   <body>
@@ -52,29 +52,31 @@
 
           let panel = new PeakFinder.PanoramaPanel({
             canvasid: 'pfcanvas', 
-            locale: 'en',
+            locale: 'en'
           }) // attach to canvas
          
           panel.init(async function() {
             console.log('ready')
             panel.settings.distanceUnit(1)
-        
+          
             panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 
-            // animate to view
-            panel.azimut(209.0, 2.0)
-            panel.altitude(1.0, 1.0)
-            panel.fieldofview(45.0, 2.0)
-          
-            await PeakFinder.utils.sleep(4.0) // wait until viewpoint is loaded
+            // set view
+            panel.azimut(209.0)
+            panel.altitude(1.0)
+            panel.fieldofview(45.0)
+            
+            panel.addEventListener('viewpointjourney finished', async function(vp) {
+                console.log(`viewpoint ready ${vp}`)
+                
+                panel.telescope.show()
 
-            panel.telescope.show()
+                await PeakFinder.utils.sleep(1.0) // wait a moment until the telescope data is calculated
 
-            await PeakFinder.utils.sleep(1.0) // wait a moment until the telescope data is calculated
-
-            console.log(`dist: ${panel.telescope.centerDistance()}m`)
-            console.log(`elev: ${panel.telescope.centerElevation()}m`)
-          });
+                console.log(`dist: ${panel.telescope.centerDistance()}m`)
+                console.log(`elev: ${panel.telescope.centerElevation()}m`)
+            })
+          })
         }
         else { // !caniuse
         

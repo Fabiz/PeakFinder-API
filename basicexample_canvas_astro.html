@@ -9,7 +9,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="example.css" />
    
-    <!-- <script async type="text/javascript" src="http://localhost:3000/script/peakfinder.1.0.min.js"></script>  -->
     <script async type="text/javascript" src="https://www.peakfinder.com/script/peakfinder.1.0.min.js"></script>
   </head> 
 
@@ -54,6 +53,9 @@
           let panel = new PeakFinder.PanoramaPanel({
             canvasid: 'pfcanvas', 
             locale: 'en',
+            theme: 'light',
+            disableinfosheets: false
+            
           }) // attach to canvas
          
 
@@ -65,18 +67,42 @@
             panel.azimut(209.0, 2.0)
             panel.altitude(1.0, 1.0)
             panel.fieldofview(45.0, 2.0)
+                    
+            panel.addEventListener('viewpointjourney finished', async function(vp) {
+              console.log(`viewpoint ready ${JSON.stringify(vp)}`)
           
-            await PeakFinder.utils.sleep(10.0) // wait until viewpoint is loaded
-
-            for (let day = 1; day <= 365; day += 7) { // once a week
-              const date = new Date(2022, 0, day);
-
-              panel.astro.currentDateTime(date.getFullYear(), date.getMonth()+1, date.getDate(), 12, 0) // careful: month in javascript is from 0..11
-              await PeakFinder.utils.sleep(2.0) // wait a moment 
+              // current times
+              console.log(`sun ${JSON.stringify(panel.astro.sun())}`)
+              console.log(`moon ${JSON.stringify(panel.astro.moon())}`)
+        
+        //      for (let day = 1; day <= 365; day += 7) { // once a week
+        //        
+        //        const date = new Date(2022, 0, day);
+        //
+        //        panel.astro.currentDateTime(date.getFullYear(), date.getMonth()+1, date.getDate(), 12, 0) // careful: month in javascript is from 0..11
+        //        await PeakFinder.utils.sleep(2.0) // wait a moment 
+        //  
+        //        console.log(`${date.toLocaleDateString("en-US")}: ${panel.astro.sunTimes()}`) // print the times
+        //      }
+            })
+            
+             panel.addEventListener('sun changed', async function(sun) {
+                console.log(`sun changed ${JSON.stringify(sun)}`)
+              })
           
-              console.log(`${date.toLocaleDateString("en-US")}: ${panel.astro.sunTimes()}`) // print the times
-            }
-          });
+              panel.addEventListener('moon changed', async function(moon) {
+                console.log(`moon changed ${JSON.stringify(moon)}`)
+             })
+             
+              panel.addEventListener('poiinfo show', async function(poi) {
+                console.log(`poiinfo show ${JSON.stringify(poi)}`)
+              })
+          
+            
+          })
+          
+          
+                  
         }
         else { // !caniuse
         

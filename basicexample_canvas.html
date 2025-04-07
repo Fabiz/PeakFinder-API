@@ -66,12 +66,15 @@
         
             panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 
-            // animate to view
-            panel.azimut(209.0, 2.0)
-            panel.altitude(1.0, 1.0)
-            panel.fieldofview(45.0, 2.0)
+            panel.addEventListener('viewpointjourney finished', async function(vp) {
+                console.log(`viewpoint ready ${vp}`)
           
-          });
+                // animate to view
+                panel.azimut(209.0, 2.0)
+                panel.altitude(1.0, 1.0)
+                panel.fieldofview(45.0, 2.0)
+            })
+          })
         }
         else { // !caniuse
         

@@ -143,6 +143,8 @@ Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
 | locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
 | bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
+| theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
+| disableinfosheets | <code>boolean</code> | Disables showing the poi infosheet or the viewpoint infosheet when the users click on a peak label or the viewpoint |
 
 **Example**  
 ```js
@@ -157,19 +159,22 @@ let panel = new PeakFinder.PanoramaPanel({
 Registers an event listenster that receives events from the PanoramaPanel.
 This method must be called after the init() resp. asycinit() methode.
 The following events are supported:
-'viewpointjourney finished' : all data for a new viewpoint has been loaded 
-'viewpoint changed' : viewpoint has changed
+- 'viewpointjourney finished' : all data for a new viewpoint has been loaded 
+- 'viewpoint changed' : viewpoint has changed
+- 'sun changed': sun times have beeen changed. 
+- 'moon changed': moon times have beeen changed. 
+- 'poiinfo show': user has clicked to a peak name or uses the telescope.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | eventname | <code>string</code> | The name of the event (see list above) |
-| callback | <code>function</code> | This function will be called when the requested event is dispached |
+| callback | <code>function</code> | This function will be called when the requested event is dispached. 'args' will include event data. |
 
 **Example**  
 ```js
-panel.addEventListener('viewpointjourney finished', function() {
-  console.log('viewpointjourney has been finished')
+panel.addEventListener('viewpointjourney finished', async function(args) {
+  console.log(`viewpoint ready ${JSON.stringify(args)}`)
 })
 ```
 <a name="module_PeakFinder..registerCommandsCallback"></a>
@@ -437,13 +442,29 @@ Sets the date/time to now
 
 <a name="module_PeakFinder.Astro..sunTimes"></a>
 
-### PeakFinder.Astro~sunTimes() ⇒ <code>String</code>
+### PeakFinder.Astro~sunTimes() ⇒ <code>Object</code>
+Gets the time of sunrise, sunset.
+
+**Returns**: <code>Object</code> - the sun times (e.g. {"sun":{"rise":"2025-04-07T06:50:59Z","set":"2025-04-07T20:11:59Z"}} )  
+<a name="module_PeakFinder.Astro..sunTimes"></a>
+
+### ~~PeakFinder.Astro~sunTimes() ⇒ <code>String</code>~~
+***Deprecated***
+
 Gets the time of sunrise, sunset.
 
 **Returns**: <code>String</code> - the times (e.g. '↑05:54, ↓21:17')  
+<a name="module_PeakFinder.Astro..moon"></a>
+
+### PeakFinder.Astro~moon() ⇒ <code>Object</code>
+Gets the time of moonrise, moonset.
+
+**Returns**: <code>Object</code> - the sun times (e.g. {"moon":{"illum":"74.7%"},"sun":{"rise":"2025-04-07T14:11:59Z","set":"2025-04-08T05:32:59Z"}}  
 <a name="module_PeakFinder.Astro..moonTimes"></a>
 
-### PeakFinder.Astro~moonTimes() ⇒ <code>String</code>
+### ~~PeakFinder.Astro~moonTimes() ⇒ <code>String</code>~~
+***Deprecated***
+
 Gets the time of moonrise, moonset.
 
 **Returns**: <code>String</code> - the times (e.g. '↑07:13, ↓22:33, 3.4%')  
