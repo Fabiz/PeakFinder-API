@@ -449,7 +449,7 @@ Gets the time of sunrise, sunset.
 <a name="module_PeakFinder.Astro..sunTimes"></a>
 
 ### ~~PeakFinder.Astro~sunTimes() ⇒ <code>String</code>~~
-***Deprecated***
+***Use method sun instead***
 
 Gets the time of sunrise, sunset.
 
@@ -463,7 +463,7 @@ Gets the time of moonrise, moonset.
 <a name="module_PeakFinder.Astro..moonTimes"></a>
 
 ### ~~PeakFinder.Astro~moonTimes() ⇒ <code>String</code>~~
-***Deprecated***
+***Use method moon instead***
 
 Gets the time of moonrise, moonset.
 
