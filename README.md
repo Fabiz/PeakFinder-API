@@ -532,6 +532,12 @@ Checks if the browser supports the required technoligies to display the PeakFind
 Checks if device has a touch screen.
 
 **Returns**: <code>Boolean</code> - True if its a touch device  
+<a name="module_PeakFinder.utils.hasMultiThreadingSupport"></a>
+
+### PeakFinder.utils.hasMultiThreadingSupport() ⇒ <code>Boolean</code>
+Checks if browser supports multithreading.
+
+**Returns**: <code>Boolean</code> - True if multithreading is available  
 <a name="module_PeakFinder.utils.sleep"></a>
 
 ### PeakFinder.utils.sleep(timeout)
