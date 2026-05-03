@@ -23,7 +23,7 @@ The following links opens the PeakFinder app with the given viewpoint on your iO
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941)
 - [peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500](peakfinder://?lat=42.8612&lng=-72.109&name=Monadnock&ele=941&off=500)
 
-More examples see here: [peakfinder.com/about/resources/apitest/](https://www.peakfinder.com/about/resources/apitest/])
+More examples see here: [peakfinder.com/about/resources/apitest/](https://www.peakfinder.com/about/resources/apitest/)
 
 ### Arguments
 
