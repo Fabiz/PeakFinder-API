@@ -39,6 +39,7 @@ Additionally to the required parameters lat and lng you can add the following ar
 | azi | Azimuth (optional) | Float 0.0 .. 360.0 (azi=90.0) |
 | alt | Altitude (optional) | Integer -25.0 .. 25.0 (alt=0.0) |
 | fov | Field of view (optional) | Integer 8 .. 90.0 (fov=45.0) |
+| date | Current date (optional). Used for Sun and moon paths. | ISO 8601 date format: 2025-06-18T13:45:13Z |
 | teleazi & telealt | Azimuth and altitude for displaying the telescope (optional, but both values are required) | Floats 0..360 (teleazi=90.5&telealt=4.5) |
 
 ***
