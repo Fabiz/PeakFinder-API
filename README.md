@@ -1,4 +1,3 @@
-
 # PeakFinder-API
 
 This page contains information about embedding the [PeakFinder](https://www.peakfinder.com) mountain panorama module to your website.
@@ -46,12 +45,12 @@ Additionally to the required parameters lat and lng you can add the following ar
 
 ## Embed with iFrame
 
-With the following code you can embed PeakFinder directly to your homepage. 
+With the following code you can embed PeakFinder directly to your homepage.
 Check out this example page: [basicexample_iframe.html](https://fabiz.github.io/PeakFinder-API/basicexample_iframe.html).
 
 
 ```html
-<iframe src="https://www.peakfinder.com/embed/?lat=42.8612&lng=-72.1092&name=Monadnock%20Mountain&ele=941&zoom=5&azi=255" 
+<iframe src="https://www.peakfinder.com/embed/?lat=42.8612&lng=-72.1092&name=Monadnock%20Mountain&ele=941&zoom=5&azi=255"
     frameBorder="0" width="100%" height="570" name="peakfinder">
 <p>Your Browser do not support iFrames.</p>
 </iframe>
@@ -65,7 +64,7 @@ This method gives you the most flexibility. You can use Javascript to control th
 Check out this example page: [basicexample_canvas.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas.html).
 \
 \
-You must do the following steps: 
+You must do the following steps:
 - Include Javascript
 - Create canvas tag
 - Load script
@@ -95,7 +94,7 @@ Add the following canvas tag your your html body:
 ```
 
  ### Load script
- 
+
  Add the following script to load the module:
 
 ```javascript
@@ -103,15 +102,15 @@ Add the following canvas tag your your html body:
 if (PeakFinder.utils.caniuse()) {
 
   let panel = new PeakFinder.PanoramaPanel({
-    canvasid: 'pfcanvas', 
+    canvasid: 'pfcanvas',
     locale: 'en' // attach to canvas
-  }) 
-  
+  })
+
   panel.init(function() {
     // inside here its save to use the panel
-    
+
     panel.settings.distanceUnit(1) // use imperial (miles, feet) format
-            
+
     panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn') // loads a viewpoint
 
     // animate to view
