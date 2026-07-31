@@ -237,7 +237,7 @@ panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 ```
 <a name="module_PeakFinder..loadViewpoint"></a>
 
-### PeakFinder~loadViewpoint(latitude, longitude, the)
+### PeakFinder~loadViewpoint(latitude, longitude, name, options)
 Loads a viewpoint with the given coordinates and an optional name
 
 
@@ -245,8 +245,18 @@ Loads a viewpoint with the given coordinates and an optional name
 | --- | --- | --- |
 | latitude | <code>number</code> |  |
 | longitude | <code>number</code> |  |
-| the | <code>string</code> | viewpoint name. Optional |
+| name | <code>string</code> | The viewpoint name. Optional |
+| options | <code>Object</code> | Additional settings. Optional |
+| options.animation | <code>string</code> | How the panorama moves to the new viewpoint. 'fly' (the default) uses the PeakFinder journey animation - it walks, flies or teleports depending on the distance to the current viewpoint. 'teleport' skips the animation and shows the new viewpoint immediately. |
 
+**Example**  
+```js
+panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn') // animated (default)
+
+panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn', {
+  animation: 'teleport', // no animation
+})
+```
 <a name="module_PeakFinder..viewpointJourneyFinished"></a>
 
 ### PeakFinder~viewpointJourneyFinished() ⇒ <code>boolean</code>
@@ -381,6 +391,55 @@ valid range: 0..320000 (320km, 200mil)
 Get/set the minimal elevation for the displayed peak names. \
 valid range: 0..10000 (10000m, 32000feet)
 
+<a name="module_PeakFinder.Settings..showZoomButtons"></a>
+
+### PeakFinder.Settings~showZoomButtons() ⇒ <code>number</code>
+Get/set the visibility of the +/- zoom buttons in the upper left corner. \
+0: hide, 1: show
+
+**Example**  
+```js
+panel.settings.showZoomButtons(0) // hide the zoom buttons
+```
+<a name="module_PeakFinder.Settings..showElevationOffsetControl"></a>
+
+### PeakFinder.Settings~showElevationOffsetControl() ⇒ <code>number</code>
+Get/set the visibility of the elevation offset control on the left hand side. \
+0: hide, 1: show
+
+<a name="module_PeakFinder.Settings..showSliders"></a>
+
+### PeakFinder.Settings~showSliders() ⇒ <code>number</code>
+Get/set the visibility of the slider button in the lower left corner. Hiding it also closes
+the sliders it opens (date, time, visibility range, minimal elevation). \
+0: hide, 1: show
+
+
+* * *
+
+## PeakFinder.style
+
+These setters and getters manage the appearance of the panorama panel. In contrast to the
+corresponding constructor options they may be used at any time.
+
+<a name="module_PeakFinder.Style..backgroundColor"></a>
+
+### PeakFinder.Style~backgroundColor(val) ⇒ <code>String</code>
+Get/set the color of the background/sky. \
+Normally the sky is white. Use the format '#rrggbb' (e.g. '#87ceeb' for sky color). \
+In contrast to the <code>bgcolor</code> constructor option this may be called at any time.
+
+
+| Param | Description |
+| --- | --- |
+| val | The background color in the format '#rrggbb'. Named css colors (e.g. 'skyblue') are supported as well. |
+
+**Example**  
+```js
+panel.style.backgroundColor('#87ceeb') // set the sky to sky blue
+
+const color = panel.style.backgroundColor() // gets '#87ceeb'
+```
 
 * * *
 
