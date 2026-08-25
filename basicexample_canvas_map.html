@@ -83,9 +83,8 @@
             console.log(`arrived: ${JSON.stringify(panel.camera())}`)
 
             // short moves look better with easeTo than with flyTo's zoom-out arc
-            await panel.easeTo(45.98333, 7.66111, 14.0, { duration: 1.5 })
+            // await panel.easeTo(45.98333, 7.66111, 14.0, { duration: 1.5 })
 
-            panel.mapstyle('bright') // the style can be switched at any time
           })
         }
         else { // !caniuse

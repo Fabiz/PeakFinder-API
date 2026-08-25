@@ -593,9 +593,9 @@ Gets the names of the overlays currently on the map, in the order they were adde
 Gets the features drawn at a point on the canvas, topmost last. Use it to react to a click - the
 panel draws no popups of its own, so the page decides what to show.
 
-The coordinates are canvas pixels, which is what a mouse event's <code>offsetX</code>/
-<code>offsetY</code> give on a canvas that is not css-scaled. <code>source</code> is the overlay the
-feature came from.
+The coordinates are css pixels relative to the canvas, which is what a mouse event's
+<code>offsetX</code>/<code>offsetY</code> give - on a high dpi display they are scaled to the
+canvas' backing store here. <code>source</code> is the overlay the feature came from.
 
 **Returns**: <code>Array</code> - the features (e.g. [{"source":"vfpv3","sourceLayer":"","id":42,"properties":{"name":"N46E008","color":"#89dbec"}}])  
 
