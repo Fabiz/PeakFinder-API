@@ -1,11 +1,16 @@
 # PeakFinder-API
 
-This page contains information about embedding the [PeakFinder](https://www.peakfinder.com) mountain panorama module to your website.
+This page contains information about embedding the [PeakFinder](https://www.peakfinder.com) mountain module to your website.
 
-PeakFinder supports 3 different methods to embed the Panorama Panel to a website:
+PeakFinder supports 3 different methods to embed a panel to a website:
 - Url-Format: Create a link including latitude/longitude and some optional parameters to link to the [PeakFinder](https://www.peakfinder.com) website
 - Embed with iFrame: Add an iFrame container to your website with latitude/longitude
-- Embed with Canvas: Use Javascript for full control of the Panorama Panel
+- Embed with Canvas: Use Javascript for full control of the panel
+
+With the canvas method you choose between two panel types: the **Panorama Panel**, which draws the
+mountain panorama, and the **Map Panel**, which draws the map. Both are attached to an html canvas
+and share the same setup.
+
 
 ## Url-Format
 
@@ -61,7 +66,7 @@ Check out this example page: [basicexample_iframe.html](https://fabiz.github.io/
 
 This method gives you the most flexibility. You can use Javascript to control the PeakFinder module.
 
-Check out this example page: [basicexample_canvas.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas.html).
+Check out these example pages: [basicexample_canvas.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas.html) (panorama) and [basicexample_canvas_map.html](https://fabiz.github.io/PeakFinder-API/basicexample_canvas_map.html) (map).
 \
 \
 You must do the following steps:
@@ -121,6 +126,33 @@ if (PeakFinder.utils.caniuse()) {
 }
 ```
 
+For a map instead of a panorama create a `MapPanel`:
+
+```javascript
+
+if (PeakFinder.utils.caniuse()) {
+
+  let panel = new PeakFinder.MapPanel({
+    canvasid: 'pfcanvas',
+    locale: 'en',
+    mapstyle: 'toner',  // 'toner' | 'bright' | 'monochrome-light' | 'toner-flatwood'
+    lat: 46.53722,      // the position the map opens at
+    lng: 8.12610,
+    zoom: 12
+  })
+
+  panel.init(async function() {
+    // inside here its save to use the panel
+
+    panel.addEventListener('camera changed', function(camera) {
+      console.log(`camera changed ${JSON.stringify(camera)}`)
+    })
+
+    await panel.flyTo(45.97639, 7.65833, 13.0) // fly to the Matterhorn
+  });
+}
+```
+
 
 * * *
 
@@ -128,44 +160,30 @@ if (PeakFinder.utils.caniuse()) {
 
 ## Version 1.0
 
+### Common panel functions
 
-* * *
+These functions are available on both the PanoramaPanel and the MapPanel.
 
-### Functions
 
-<a name="module_PeakFinder..PeakFinder"></a>
-
-### PeakFinder~PeakFinder : <code>object</code>
-Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in a Javascript dictionary:
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
-| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
-| bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
-| theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
-| disableinfosheets | <code>boolean</code> | Disables showing the poi infosheet or the viewpoint infosheet when the users click on a peak label or the viewpoint |
-
-**Example**  
-```js
-let panel = new PeakFinder.PanoramaPanel({
-  canvasid: 'pfcanvas', 
-  locale: 'en'
-}) // attach to canvas
-```
 <a name="module_PeakFinder..addEventListener"></a>
 
 ### PeakFinder~addEventListener(eventname, callback)
-Registers an event listenster that receives events from the PanoramaPanel.
+Registers an event listenster that receives events from the panel.
 This method must be called after the init() resp. asycinit() methode.
-The following events are supported:
+The PanoramaPanel supports the following events:
 - 'viewpointjourney finished' : all data for a new viewpoint has been loaded 
 - 'viewpoint changed' : viewpoint has changed
 - 'sun changed': sun times have beeen changed. 
 - 'moon changed': moon times have beeen changed. 
-- 'poiinfo show': user has clicked to a peak name or uses the telescope.
+- 'poiinfo show': user has clicked to a peak name or uses the telescope. 
+
+The MapPanel supports these:
+- 'map loaded': the style and the visible tiles have been loaded - the map has pixels.
+- 'camera changed': the camera came to rest after a flight or a gesture. The event data holds
+  the camera: {"lat":46.53722,"lng":8.12610,"zoom":12,"bearing":0,"pitch":0}
+- 'map flight finished': a flyTo() animation has landed. The event data holds the camera.
+- 'back pressed': the user pressed the map's back button (hidden by default, see
+  settings.showBackButton).
 
 
 | Param | Type | Description |
@@ -182,8 +200,8 @@ panel.addEventListener('viewpointjourney finished', async function(args) {
 <a name="module_PeakFinder..registerCommandsCallback"></a>
 
 ### PeakFinder~registerCommandsCallback(command)
-Registers a callback that receives commands/messages from the PanoramaPanel.
-The PanoramaPanel will send a message when a specific event occured. E.g. when a
+Registers a callback that receives commands/messages from the panel.
+The panel will send a message when a specific event occured. E.g. when a
 new viewpoint was loaded the command: \
 <code> viewpoint changed lat=46.53722&lng=8.12610 </code> \
 will be sent. 
@@ -203,9 +221,9 @@ panel.registerCommandsCallback(function(cmd) {
 <a name="module_PeakFinder..init"></a>
 
 ### PeakFinder~init(callback)
-Loads all the needed stuff for displaying the panorama. Call this method only once.
-The async callback will inform when the panorama panel is ready. After this call additional
-commands like <code>loadViewpoint</code> may be called.
+Loads all the needed stuff for displaying the panel. Call this method only once.
+The async callback will inform when the panel is ready. After this call additional
+commands like <code>loadViewpoint</code> (panorama) or <code>jumpTo</code> (map) may be called.
 
 
 | Param | Type | Description |
@@ -224,9 +242,9 @@ panel.init(function() {
 <a name="module_PeakFinder..asyncinit"></a>
 
 ### PeakFinder~asyncinit()
-Loads all the needed stuff for displaying the panorama. Call this method only once.
+Loads all the needed stuff for displaying the panel. Call this method only once.
 Same as the init function but with support for the Javascript async pattern. After this call additional
-commands like <code>loadViewpoint</code> may be called.
+commands like <code>loadViewpoint</code> (panorama) or <code>jumpTo</code> (map) may be called.
 
 **Example**  
 ```js
@@ -235,9 +253,40 @@ async panel.asyncinit()
 console.log('ready')
 panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn')
 ```
-<a name="module_PeakFinder..loadViewpoint"></a>
 
-### PeakFinder~loadViewpoint(latitude, longitude, the)
+* * *
+
+## PeakFinder.PanoramaPanel
+
+The panorama panel: a canvas rendering the PeakFinder mountain panorama. In addition to the
+functions below it carries the <code>settings</code>, <code>style</code>, <code>viewpoint</code>,
+<code>astro</code> and <code>telescope</code> sub objects documented further down.
+
+<a name="module_PeakFinder.PanoramaPanel..PeakFinder"></a>
+
+### PeakFinder.PanoramaPanel~PeakFinder : <code>object</code>
+Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in a Javascript dictionary:
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
+| theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
+| disableinfosheets | <code>boolean</code> | Disables showing the poi infosheet or the viewpoint infosheet when the users click on a peak label or the viewpoint |
+
+**Example**  
+```js
+let panel = new PeakFinder.PanoramaPanel({
+  canvasid: 'pfcanvas', 
+  locale: 'en'
+}) // attach to canvas
+```
+<a name="module_PeakFinder.PanoramaPanel..loadViewpoint"></a>
+
+### PeakFinder.PanoramaPanel~loadViewpoint(latitude, longitude, name, options)
 Loads a viewpoint with the given coordinates and an optional name
 
 
@@ -245,16 +294,26 @@ Loads a viewpoint with the given coordinates and an optional name
 | --- | --- | --- |
 | latitude | <code>number</code> |  |
 | longitude | <code>number</code> |  |
-| the | <code>string</code> | viewpoint name. Optional |
+| name | <code>string</code> | The viewpoint name. Optional |
+| options | <code>Object</code> | Additional settings. Optional |
+| options.animation | <code>string</code> | How the panorama moves to the new viewpoint. 'fly' (the default) uses the PeakFinder journey animation - it walks, flies or teleports depending on the distance to the current viewpoint. 'teleport' skips the animation and shows the new viewpoint immediately. |
 
-<a name="module_PeakFinder..viewpointJourneyFinished"></a>
+**Example**  
+```js
+panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn') // animated (default)
 
-### PeakFinder~viewpointJourneyFinished() ⇒ <code>boolean</code>
+panel.loadViewpoint(46.53722, 8.12610, 'Finsteraarhorn', {
+  animation: 'teleport', // no animation
+})
+```
+<a name="module_PeakFinder.PanoramaPanel..viewpointJourneyFinished"></a>
+
+### PeakFinder.PanoramaPanel~viewpointJourneyFinished() ⇒ <code>boolean</code>
 Checks if the viewpoint journey has been finished.
 
-<a name="module_PeakFinder..azimut"></a>
+<a name="module_PeakFinder.PanoramaPanel..azimut"></a>
 
-### PeakFinder~azimut(val, animationduration) ⇒ <code>number</code>
+### PeakFinder.PanoramaPanel~azimut(val, animationduration) ⇒ <code>number</code>
 Get/set azimut.
 
 
@@ -269,9 +328,9 @@ await panel.azimut(120.0, 1.0) // set azimut with an animation time of 1 second
 
 const azimut = panel.azimut() // gets azimut
 ```
-<a name="module_PeakFinder..altitude"></a>
+<a name="module_PeakFinder.PanoramaPanel..altitude"></a>
 
-### PeakFinder~altitude(val, animationduration) ⇒ <code>number</code>
+### PeakFinder.PanoramaPanel~altitude(val, animationduration) ⇒ <code>number</code>
 Get/set altitude.
 
 
@@ -280,9 +339,9 @@ Get/set altitude.
 | val | The altitude value in degrees |
 | animationduration | The duration of the animation. If undefined no animation will be done. |
 
-<a name="module_PeakFinder..fieldofview"></a>
+<a name="module_PeakFinder.PanoramaPanel..fieldofview"></a>
 
-### PeakFinder~fieldofview(val, animationduration) ⇒ <code>number</code>
+### PeakFinder.PanoramaPanel~fieldofview(val, animationduration) ⇒ <code>number</code>
 Get/set field of view (zoom).
 
 
@@ -291,9 +350,9 @@ Get/set field of view (zoom).
 | val | The field of view (zoom) value in degrees |
 | animationduration | The duration of the animation. If undefined no animation will be done. |
 
-<a name="module_PeakFinder..elevationOffset"></a>
+<a name="module_PeakFinder.PanoramaPanel..elevationOffset"></a>
 
-### PeakFinder~elevationOffset(val, animationduration) ⇒ <code>number</code>
+### PeakFinder.PanoramaPanel~elevationOffset(val, animationduration) ⇒ <code>number</code>
 Get/set elevation offset.
 
 
@@ -311,9 +370,253 @@ const elev = panel.elevationOffset() // gets elevation offset
 
 * * *
 
-## PeakFinder.settings
+## PeakFinder.MapPanel
 
-The following setters and getters manage the PeakFinder settings.
+The map panel: a canvas rendering the PeakFinder map. It supports the common panel functions
+(init, asyncinit, addEventListener, registerCommandsCallback) plus the camera functions below and
+the <code>settings</code> sub object documented further down.
+
+<a name="module_PeakFinder.MapPanel..PeakFinder"></a>
+
+### PeakFinder.MapPanel~PeakFinder : <code>object</code>
+Constructor: Initialization of the PeakFinder MapPanel. Pass the options in a Javascript dictionary:
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| mapstyle | <code>string</code> | The style the map is drawn with: 'toner' (the default), 'bright', 'monochrome-light', 'toner-flatwood' or 'relief' (a diagnostic style painting the elevation model itself). An unknown name falls back to the default style. |
+| lat | <code>number</code> | Latitude of the position the map opens at. Optional |
+| lng | <code>number</code> | Longitude of the position the map opens at. Optional |
+| zoom | <code>number</code> | Zoom level the map opens at. Optional, defaults to 12 when lat/lng are given. Without lat/lng the map opens on an overview of the Alps. |
+| bearing | <code>number</code> | Bearing in degrees from true north the map opens at. Optional |
+| pitch | <code>number</code> | Pitch in degrees the map opens at. 0 is a two-dimensional map. Optional |
+| theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
+
+**Example**  
+```js
+let panel = new PeakFinder.MapPanel({
+  canvasid: 'pfcanvas',
+  locale: 'en',
+  mapstyle: 'toner',
+  lat: 46.53722,
+  lng: 8.12610,
+  zoom: 12
+}) // attach to canvas
+```
+<a name="module_PeakFinder.MapPanel..jumpTo"></a>
+
+### PeakFinder.MapPanel~jumpTo(latitude, longitude, zoom, options)
+Moves the camera to the given position without any animation.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| latitude | <code>number</code> |  |
+| longitude | <code>number</code> |  |
+| zoom | <code>number</code> | The zoom level. Optional - the current zoom is kept when it is omitted. |
+| options | <code>Object</code> | Additional camera settings. Optional |
+| options.bearing | <code>number</code> | Bearing in degrees from true north |
+| options.pitch | <code>number</code> | Pitch in degrees. 0 is a two-dimensional map |
+
+**Example**  
+```js
+panel.jumpTo(46.53722, 8.12610, 12)
+
+panel.jumpTo(46.53722, 8.12610, 12, { bearing: 45.0, pitch: 30.0 })
+```
+<a name="module_PeakFinder.MapPanel..easeTo"></a>
+
+### PeakFinder.MapPanel~easeTo(latitude, longitude, zoom, options)
+Moves the camera to the given position with a transition of a fixed duration. Use this for short
+moves, where <code>flyTo</code>'s zoom-out arc would look exaggerated.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| latitude | <code>number</code> |  |
+| longitude | <code>number</code> |  |
+| zoom | <code>number</code> | The zoom level. Optional - the current zoom is kept when it is omitted. |
+| options | <code>Object</code> | Additional settings. Optional |
+| options.duration | <code>number</code> | The duration of the animation in seconds. Default: 1.0 |
+| options.bearing | <code>number</code> | Bearing in degrees from true north |
+| options.pitch | <code>number</code> | Pitch in degrees. 0 is a two-dimensional map |
+
+**Example**  
+```js
+await panel.easeTo(46.53722, 8.12610, 12, { duration: 1.0 })
+```
+<a name="module_PeakFinder.MapPanel..flyTo"></a>
+
+### PeakFinder.MapPanel~flyTo(latitude, longitude, zoom, options)
+Flies the camera to the given position: the map zooms out, travels and zooms back in. Without a
+duration the flight takes as long as its distance warrants.
+The returned promise resolves when the flight has landed - the same moment the
+'map flight finished' event is dispatched.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| latitude | <code>number</code> |  |
+| longitude | <code>number</code> |  |
+| zoom | <code>number</code> | The zoom level. Optional - the current zoom is kept when it is omitted. |
+| options | <code>Object</code> | Additional settings. Optional |
+| options.duration | <code>number</code> | The duration of the flight in seconds. Optional |
+| options.bearing | <code>number</code> | Bearing in degrees from true north |
+| options.pitch | <code>number</code> | Pitch in degrees. 0 is a two-dimensional map |
+
+**Example**  
+```js
+await panel.flyTo(45.97639, 7.65833, 13.0) // the engine picks the duration
+
+await panel.flyTo(45.97639, 7.65833, 13.0, { duration: 2.0 })
+```
+<a name="module_PeakFinder.MapPanel..camera"></a>
+
+### PeakFinder.MapPanel~camera() ⇒ <code>Object</code>
+Gets the current camera.
+
+**Returns**: <code>Object</code> - the camera (e.g. {"lat":46.53722,"lng":8.12610,"zoom":12,"bearing":0,"pitch":0})  
+**Example**  
+```js
+const camera = panel.camera()
+console.log(`${camera.lat}, ${camera.lng} @ ${camera.zoom}`)
+```
+<a name="module_PeakFinder.MapPanel..mapstyle"></a>
+
+### PeakFinder.MapPanel~mapstyle(val) ⇒ <code>String</code>
+Get/set the style the map is drawn with. In contrast to the <code>mapstyle</code> constructor
+option this may be called at any time.
+
+
+| Param | Description |
+| --- | --- |
+| val | The style name: 'toner', 'bright', 'monochrome-light', 'toner-flatwood' or 'relief'. An unknown name falls back to the default style. |
+
+**Example**  
+```js
+panel.mapstyle('bright') // switch the style
+
+const style = panel.mapstyle() // gets 'bright'
+```
+<a name="module_PeakFinder.MapPanel..addOverlay"></a>
+
+### PeakFinder.MapPanel~addOverlay(id, geojson, layersjson, optionsjson)
+Adds a GeoJSON overlay: one source holding the document plus the style layers drawn from it. The
+overlay is identified by <code>id</code> for every later call, and adding an id that already exists
+replaces it. Overlays are drawn above the map style, in the order they were added, and they survive
+a <code>mapstyle</code> change.
+
+<code>layersjson</code> is an array of MapLibre style layers, so the whole expression language is
+available. Only what is specific to the layer needs to be given: the source is bound to this overlay
+and a missing layer id is filled in. Leave it out for a plain 2px outline that takes its colour and
+opacity from each feature's own <code>color</code> and <code>opacity</code> properties.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The name of the overlay |
+| geojson | <code>string</code> | The GeoJSON document, as text |
+| layersjson | <code>string</code> | The style layers, as text. Optional |
+| optionsjson | <code>string</code> | How the document is tiled, as text: a json object taking any of 'minzoom', 'maxzoom', 'buffer' and 'tolerance' - the same options a style's geojson source takes. Optional. These control simplification and tile extent, not memory: tiles are built on demand, so what a document costs is the document itself. |
+
+**Example**  
+```js
+panel.addOverlay('vfpv3', geojsontext) // default outline, coloured per feature
+
+panel.addOverlay('vfpv3', geojsontext, JSON.stringify([{
+  type: 'line',
+  minzoom: 5,
+  paint: {
+    'line-color': ['get', 'color'],
+    'line-width': 2
+  }
+}]))
+
+// coarse shapes: simplify harder and stop refining early
+panel.addOverlay('vfpv3', geojsontext, undefined, '{"maxzoom":10,"tolerance":1}')
+```
+<a name="module_PeakFinder.MapPanel..setOverlayData"></a>
+
+### PeakFinder.MapPanel~setOverlayData(id, geojson)
+Replaces the overlay's document, keeping its layers and its visibility. Use this rather than
+<code>addOverlay</code> when new data arrives for an overlay that is already on the map.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The name of the overlay |
+| geojson | <code>string</code> | The GeoJSON document, as text |
+
+**Example**  
+```js
+const response = await fetch('/geojson/demorigins?source=vfpv3')
+panel.setOverlayData('vfpv3', await response.text())
+```
+<a name="module_PeakFinder.MapPanel..showOverlay"></a>
+
+### PeakFinder.MapPanel~showOverlay(id, show)
+Shows or hides an overlay. The document stays loaded, so switching an overlay off and on again
+costs nothing.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The name of the overlay |
+| show | <code>boolean</code> |  |
+
+**Example**  
+```js
+panel.showOverlay('vfpv3', false)
+```
+<a name="module_PeakFinder.MapPanel..removeOverlay"></a>
+
+### PeakFinder.MapPanel~removeOverlay(id)
+Removes an overlay and frees its document.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The name of the overlay |
+
+<a name="module_PeakFinder.MapPanel..overlays"></a>
+
+### PeakFinder.MapPanel~overlays() ⇒ <code>Array</code>
+Gets the names of the overlays currently on the map, in the order they were added.
+
+**Returns**: <code>Array</code> - the overlay ids (e.g. ['best', 'vfpv3'])  
+<a name="module_PeakFinder.MapPanel..queryFeatures"></a>
+
+### PeakFinder.MapPanel~queryFeatures(x, y) ⇒ <code>Array</code>
+Gets the features drawn at a point on the canvas, topmost last. Use it to react to a click - the
+panel draws no popups of its own, so the page decides what to show.
+
+The coordinates are canvas pixels, which is what a mouse event's <code>offsetX</code>/
+<code>offsetY</code> give on a canvas that is not css-scaled. <code>source</code> is the overlay the
+feature came from.
+
+**Returns**: <code>Array</code> - the features (e.g. [{"source":"vfpv3","sourceLayer":"","id":42,"properties":{"name":"N46E008","color":"#89dbec"}}])  
+
+| Param | Type |
+| --- | --- |
+| x | <code>number</code> | 
+| y | <code>number</code> | 
+
+**Example**  
+```js
+canvas.addEventListener('click', function (event) {
+  const hits = panel.queryFeatures(event.offsetX, event.offsetY)
+  if (hits.length) console.log(hits[hits.length - 1].properties.name)
+})
+```
+
+* * *
+
+## PeakFinder.PanoramaPanel.settings
+
+The following setters and getters manage the settings of the panorama panel.
 
 <a name="module_PeakFinder.Settings..theme"></a>
 
@@ -381,12 +684,120 @@ valid range: 0..320000 (320km, 200mil)
 Get/set the minimal elevation for the displayed peak names. \
 valid range: 0..10000 (10000m, 32000feet)
 
+<a name="module_PeakFinder.Settings..showZoomButtons"></a>
+
+### PeakFinder.Settings~showZoomButtons() ⇒ <code>number</code>
+Get/set the visibility of the +/- zoom buttons in the upper left corner. \
+0: hide, 1: show
+
+**Example**  
+```js
+panel.settings.showZoomButtons(0) // hide the zoom buttons
+```
+<a name="module_PeakFinder.Settings..showElevationOffsetControl"></a>
+
+### PeakFinder.Settings~showElevationOffsetControl() ⇒ <code>number</code>
+Get/set the visibility of the elevation offset control on the left hand side. \
+0: hide, 1: show
+
+<a name="module_PeakFinder.Settings..showSliders"></a>
+
+### PeakFinder.Settings~showSliders() ⇒ <code>number</code>
+Get/set the visibility of the slider button in the lower left corner. Hiding it also closes
+the sliders it opens (date, time, visibility range, minimal elevation). \
+0: hide, 1: show
+
+
+* * *
+
+## PeakFinder.MapPanel.settings
+
+The following setters and getters manage the settings of the map panel. The panorama settings that
+have no meaning on a map (sun, moon, grid, projection, visibility range, ...) are not available here.
+
+<a name="module_PeakFinder.MapSettings..theme"></a>
+
+### PeakFinder.MapSettings~theme() ⇒ <code>number</code>
+Get/set theme. \
+0: light, 1: dark
+
+**Example**  
+```js
+panel.settings.theme(1) // set to dark
+
+const theme = panel.settings.theme() // gets dark
+```
+<a name="module_PeakFinder.MapSettings..distanceUnit"></a>
+
+### PeakFinder.MapSettings~distanceUnit() ⇒ <code>number</code>
+Get/set distance unit. Changing it reloads the map style, so the elevation labels are redrawn in
+the matching unit. \
+0: metric, 1: imperial
+
+**Example**  
+```js
+panel.settings.distanceUnit(1) // set to imperial
+
+const unit = panel.settings.distanceUnit() // gets imperial
+```
+<a name="module_PeakFinder.MapSettings..showBackButton"></a>
+
+### PeakFinder.MapSettings~showBackButton() ⇒ <code>number</code>
+Get/set the visibility of the back button in the upper left corner. It is hidden by default on an
+embedded map, where there is nothing to go back to. When it is shown, pressing it dispatches the
+'back pressed' event. \
+0: hide, 1: show
+
+**Example**  
+```js
+panel.settings.showBackButton(1) // show the back button
+
+panel.addEventListener('back pressed', function () {
+  history.back()
+})
+```
+<a name="module_PeakFinder.MapSettings..showStartupMarker"></a>
+
+### PeakFinder.MapSettings~showStartupMarker() ⇒ <code>number</code>
+Get/set the visibility of the marker on the position the map opened at. \
+0: hide, 1: show
+
+**Example**  
+```js
+panel.settings.showStartupMarker(0) // hide the marker
+```
+
+* * *
+
+## PeakFinder.style
+
+These setters and getters manage the appearance of the panorama panel. In contrast to the
+corresponding constructor options they may be used at any time. Panorama panel only.
+
+<a name="module_PeakFinder.Style..backgroundColor"></a>
+
+### PeakFinder.Style~backgroundColor(val) ⇒ <code>String</code>
+Get/set the color of the background/sky. \
+Normally the sky is white. Use the format '#rrggbb' (e.g. '#87ceeb' for sky color). \
+In contrast to the <code>bgcolor</code> constructor option this may be called at any time.
+
+
+| Param | Description |
+| --- | --- |
+| val | The background color in the format '#rrggbb'. Named css colors (e.g. 'skyblue') are supported as well. |
+
+**Example**  
+```js
+panel.style.backgroundColor('#87ceeb') // set the sky to sky blue
+
+const color = panel.style.backgroundColor() // gets '#87ceeb'
+```
 
 * * *
 
 ## PeakFinder.viewpoint
 
-These methods return information about the current viewpoint.
+These methods return information about the current viewpoint. Panorama panel only.
 
 <a name="module_PeakFinder.Viewpoint..name"></a>
 
@@ -417,7 +828,7 @@ Gets the viewpoint elevation in meters.
 
 ## PeakFinder.astro
 
-These methods can be used to set the current date/time and to return sunrise/sunset, moonrise/moonset times.
+These methods can be used to set the current date/time and to return sunrise/sunset, moonrise/moonset times. Panorama panel only.
 
 <a name="module_PeakFinder.Astro..currentDateTime"></a>
 
@@ -475,7 +886,7 @@ Gets the time of moonrise, moonset.
 
 ## PeakFinder.telescope
 
-These methods can be used to show/hide telescope and get azimut, altitude, distance and elevation.
+These methods can be used to show/hide telescope and get azimut, altitude, distance and elevation. Panorama panel only.
 
 <a name="module_PeakFinder.Telescope..show"></a>
 

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=0"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="example.css" />
+
+    <!-- <script async type="text/javascript" src="http://localhost:3000/script/peakfinder.1.0.min.js"></script>  -->
+    <script async type="text/javascript" src="https://www.peakfinder.com/script/peakfinder.1.0.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <img
+          id="logo"
+          src="https://www.peakfinder.com/peakfinder.svg"
+          alt="PeakFinder Logo"
+          title="PeakFinder Logo"
+          height="30"
+          width="208"
+        />
+        <br />
+        Map Demo Page
+      </header>
+
+      <div class="content">
+        <canvas id="pfcanvas" oncontextmenu="event.preventDefault()"> </canvas>
+
+        <div id="pfcanvasprogress">
+          <div class="spinner" id="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>Footer</p>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+
+      window.onload = () => {
+
+        if (PeakFinder.utils.caniuse()) {
+
+          // a map panel instead of a panorama panel. the map opens at lat/lng/zoom,
+          // so there is no jump once the module is ready.
+          let panel = new PeakFinder.MapPanel({
+            canvasid: 'pfcanvas',
+            locale: 'en',
+            mapstyle: 'toner', // 'toner' | 'bright' | 'monochrome-light' | 'toner-flatwood'
+            lat: 46.53722,
+            lng: 8.12610,
+            zoom: 12
+          }) // attach to canvas
+
+          panel.init(async function() {
+            console.log('ready')
+
+            panel.settings.distanceUnit(1) // use imperial (miles, feet) format
+
+            panel.addEventListener('map loaded', function () {
+              console.log('the map has pixels')
+            })
+
+            panel.addEventListener('camera changed', function (camera) {
+              // fires once the camera comes to rest, not on every frame of a pan
+              console.log(`camera changed ${JSON.stringify(camera)}`)
+            })
+
+            // fly to the Matterhorn. without a duration the engine picks one that
+            // matches the distance. the promise resolves when the flight lands.
+            await panel.flyTo(45.97639, 7.65833, 13.0)
+
+            console.log(`arrived: ${JSON.stringify(panel.camera())}`)
+
+            // short moves look better with easeTo than with flyTo's zoom-out arc
+            await panel.easeTo(45.98333, 7.66111, 14.0, { duration: 1.5 })
+
+            panel.mapstyle('bright') // the style can be switched at any time
+          })
+        }
+        else { // !caniuse
+
+        }
+      }
+    </script>
+  </body>
+</html>
