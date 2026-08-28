@@ -501,6 +501,25 @@ panel.mapstyle('bright') // switch the style
 
 const style = panel.mapstyle() // gets 'bright'
 ```
+<a name="module_PeakFinder.MapPanel..mapstyles"></a>
+
+### PeakFinder.MapPanel~mapstyles() ⇒ <code>Array</code>
+The styles this build can draw the map with, in the order they are meant to be offered. Each entry
+is <code>{ id, name }</code> - the <code>id</code> is what <code>mapstyle()</code> and the
+<code>mapstyle</code> constructor option take, the <code>name</code> is a label to show a person.
+Read it rather than hardcoding a list: a style added or renamed in a later release turns up here on
+its own, and a chooser built from it cannot offer one this build does not have.
+
+**Example**  
+```js
+const styles = panel.mapstyles()
+// [{ id: 'toner', name: 'Toner' }, { id: 'bright', name: 'Bright' }, ...]
+
+const current = panel.mapstyle()
+styles.forEach(function (style) {
+  console.log(style.id === current ? style.name + ' (current)' : style.name)
+})
+```
 <a name="module_PeakFinder.MapPanel..addOverlay"></a>
 
 ### PeakFinder.MapPanel~addOverlay(id, geojson, layersjson, optionsjson)
@@ -511,8 +530,14 @@ a <code>mapstyle</code> change.
 
 <code>layersjson</code> is an array of MapLibre style layers, so the whole expression language is
 available. Only what is specific to the layer needs to be given: the source is bound to this overlay
-and a missing layer id is filled in. Leave it out for a plain 2px outline that takes its colour and
-opacity from each feature's own <code>color</code> and <code>opacity</code> properties.
+and a missing layer id is filled in. Leave it out for a plain 2px outline plus a dot on each point,
+both taking their colour and opacity from each feature's own <code>color</code> and
+<code>opacity</code> properties.
+
+Every layer type the engine draws is available here, <code>circle</code> and <code>symbol</code>
+included - which is what a set of points with names is made of: a circle layer for the dots and a
+symbol layer for the labels, over the same source. A circle layer draws a dot at EVERY vertex it
+sees, so filter it to points when the document also holds lines or polygons.
 
 
 | Param | Type | Description |
@@ -537,6 +562,38 @@ panel.addOverlay('vfpv3', geojsontext, JSON.stringify([{
 
 // coarse shapes: simplify harder and stop refining early
 panel.addOverlay('vfpv3', geojsontext, undefined, '{"maxzoom":10,"tolerance":1}')
+
+// points with names: a dot per feature, sized and coloured from its own properties, and its name
+// beside it. 'text-allow-overlap' keeps every label on screen instead of dropping the ones that
+// collide - right for a diagnostic layer where a missing dot reads as missing data.
+panel.addOverlay('pois', geojsontext, JSON.stringify([
+  {
+    type: 'circle',
+    filter: ['==', ['geometry-type'], 'Point'],
+    paint: {
+      'circle-color': ['get', 'color'],
+      'circle-radius': ['get', 'radius'],
+      'circle-stroke-width': 2,
+      'circle-stroke-color': '#ffffff'
+    }
+  },
+  {
+    type: 'symbol',
+    layout: {
+      'text-field': ['get', 'name'],
+      'text-font': ['Noto Sans Regular'],
+      'text-size': 12,
+      'text-anchor': 'left',
+      'text-offset': [0.9, 0],
+      'text-allow-overlap': true
+    },
+    paint: {
+      'text-color': '#111111',
+      'text-halo-color': '#ffffff',
+      'text-halo-width': 1.4
+    }
+  }
+]))
 ```
 <a name="module_PeakFinder.MapPanel..setOverlayData"></a>
 
