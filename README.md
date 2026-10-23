@@ -1055,6 +1055,12 @@ Checks if device has a touch screen.
 Checks if browser supports multithreading.
 
 **Returns**: <code>Boolean</code> - True if multithreading is available  
+<a name="module_PeakFinder.utils.hasSimdSupport"></a>
+
+### PeakFinder.utils.hasSimdSupport() ⇒ <code>Boolean</code>
+Checks if browser supports WebAssembly SIMD (needed by the multithreaded build).
+
+**Returns**: <code>Boolean</code> - True if WebAssembly SIMD is available  
 <a name="module_PeakFinder.utils.sleep"></a>
 
 ### PeakFinder.utils.sleep(timeout)
