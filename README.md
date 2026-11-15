@@ -292,7 +292,7 @@ Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in
 | Name | Type | Description |
 | --- | --- | --- |
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
-| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant,nl,da,sv,nb,ca,pl,cs,sk,ro,ru,uk |
 | bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
 | theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
 | disableinfosheets | <code>boolean</code> | Disables showing the poi infosheet or the viewpoint infosheet when the users click on a peak label or the viewpoint |
@@ -406,7 +406,7 @@ Constructor: Initialization of the PeakFinder MapPanel. Pass the options in a Ja
 | Name | Type | Description |
 | --- | --- | --- |
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
-| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant,nl,da,sv,nb,ca,pl,cs,sk,ro,ru,uk |
 | mapstyle | <code>string</code> | The style the map is drawn with: 'toner' (the default), 'bright', 'monochrome-light', 'toner-flatwood' or 'relief' (a diagnostic style painting the elevation model itself). An unknown name falls back to the default style. |
 | lat | <code>number</code> | Latitude of the position the map opens at. Optional |
 | lng | <code>number</code> | Longitude of the position the map opens at. Optional |
