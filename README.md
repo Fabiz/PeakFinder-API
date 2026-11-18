@@ -218,6 +218,26 @@ panel.registerCommandsCallback(function(cmd) {
   console.log(cmd)
 })
 ```
+<a name="module_PeakFinder..updateData"></a>
+
+### PeakFinder~updateData()
+Loads the newest elevation (dem), place (met) and map (pvt) tiles, the way the update function
+of the PeakFinder mobile apps does. Available on both panel types, and in both cases it covers
+everything the panel has stored rather than only what is on screen: a panorama panel updates
+every tile in its databases, a map panel every tile in its cache.
+
+Only tiles whose local version is older than the published one are fetched, so a call with
+nothing to update costs a few index requests and no more. The panel keeps drawing throughout and
+redraws with the new data once the download finishes; there is nothing to await.
+
+Call it after init(), and only when the user asked for it - it is a download.
+
+**Example**  
+```js
+document.getElementById('update').addEventListener('click', function () {
+  panel.updateData()
+})
+```
 <a name="module_PeakFinder..init"></a>
 
 ### PeakFinder~init(callback)
@@ -272,7 +292,7 @@ Constructor: Initialization of the PeakFinder PanoramaPanel. Pass the options in
 | Name | Type | Description |
 | --- | --- | --- |
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
-| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant,nl,da,sv,nb,ca,pl,cs,sk,ro,ru,uk |
 | bgcolor | <code>string</code> | A custom color for the background/sky. Normally the sky is white. For another color use the format '#rrggbb' (e.g. #87CEEB for sky color). |
 | theme | <code>string</code> | 'dark' for dark-theme. otherwise 'light' theme will be shown |
 | disableinfosheets | <code>boolean</code> | Disables showing the poi infosheet or the viewpoint infosheet when the users click on a peak label or the viewpoint |
@@ -386,7 +406,7 @@ Constructor: Initialization of the PeakFinder MapPanel. Pass the options in a Ja
 | Name | Type | Description |
 | --- | --- | --- |
 | canvasid | <code>string</code> | The id of the html canvas element. Default: 'canvas' |
-| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant |
+| locale | <code>string</code> | The language locale of the module. Default: 'en'. Supported locales: en,de,fr,it,es,pt,ja,ko,zh-Hans,zh-Hant,nl,da,sv,nb,ca,pl,cs,sk,ro,ru,uk |
 | mapstyle | <code>string</code> | The style the map is drawn with: 'toner' (the default), 'bright', 'monochrome-light', 'toner-flatwood' or 'relief' (a diagnostic style painting the elevation model itself). An unknown name falls back to the default style. |
 | lat | <code>number</code> | Latitude of the position the map opens at. Optional |
 | lng | <code>number</code> | Longitude of the position the map opens at. Optional |
@@ -644,6 +664,33 @@ Removes an overlay and frees its document.
 Gets the names of the overlays currently on the map, in the order they were added.
 
 **Returns**: <code>Array</code> - the overlay ids (e.g. ['best', 'vfpv3'])  
+<a name="module_PeakFinder.MapPanel..setElevationBand"></a>
+
+### PeakFinder.MapPanel~setElevationBand(lower, upper, options)
+Colours the terrain by elevation: everything at or below <code>lower</code> metres in one colour,
+everything at or above <code>upper</code> metres in another. The terrain in between and the sea
+stay untinted. Pass <code>null</code> for a limit to switch it off; with both off the band is
+removed. The band is drawn below the labels and survives a <code>mapstyle</code> change.
+
+Cheap enough to call on every event of a slider.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| lower | <code>number</code> | The lower limit in metres, or null |
+| upper | <code>number</code> | The upper limit in metres, or null |
+| options | <code>Object</code> | Colours. Optional |
+| options.belowColor | <code>string</code> | CSS colour for the terrain below <code>lower</code>. Default: <code>'rgba(42,198,255,0.63)'</code>. <code>#rrggbbaa</code> is not supported |
+| options.aboveColor | <code>string</code> | CSS colour for the terrain above <code>upper</code>. Default: <code>'rgba(255,42,98,0.63)'</code> |
+
+**Example**  
+```js
+panel.setElevationBand(1500, 3000)
+
+panel.setElevationBand(null, 2500, { aboveColor: 'rgba(255,160,0,0.75)' })
+
+panel.setElevationBand(null, null) // off
+```
 <a name="module_PeakFinder.MapPanel..queryFeatures"></a>
 
 ### PeakFinder.MapPanel~queryFeatures(x, y) ⇒ <code>Array</code>
@@ -1008,6 +1055,12 @@ Checks if device has a touch screen.
 Checks if browser supports multithreading.
 
 **Returns**: <code>Boolean</code> - True if multithreading is available  
+<a name="module_PeakFinder.utils.hasSimdSupport"></a>
+
+### PeakFinder.utils.hasSimdSupport() ⇒ <code>Boolean</code>
+Checks if browser supports WebAssembly SIMD (needed by the multithreaded build).
+
+**Returns**: <code>Boolean</code> - True if WebAssembly SIMD is available  
 <a name="module_PeakFinder.utils.sleep"></a>
 
 ### PeakFinder.utils.sleep(timeout)
